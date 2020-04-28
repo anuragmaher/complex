@@ -5,19 +5,19 @@ services:
   - docker
 
 before_install:
-  - docker build -t anurag/complex-client -f ./client/Dockerfile.dev ./client
+  - docker build -t anuragmaher/complex-client -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run -e CI=true anurag/complex-client npm run test -- --coverage
+  - docker run -e CI=true anuragmaher/complex-client npm run test -- --coverage
 
 after_success:
-  - docker build -t anurag/complex-client ./client
-  - docker build -t anurag/complex-nginx ./nginx
-  - docker build -t anurag/complex-server ./server
-  - docker build -t anurag/complex-worker ./worker
+  - docker build -t anuragmaher/complex-client ./client
+  - docker build -t anuragmaher/complex-nginx ./nginx
+  - docker build -t anuragmaher/complex-server ./server
+  - docker build -t anuragmaher/complex-worker ./worker
 
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  - docker push anurag/complex-client
-  - docker push anurag/complex-nginx
-  - docker push anurag/complex-server
-  - docker push anurag/complex-worker
+  - docker push anuragmaher/complex-client
+  - docker push anuragmaher/complex-nginx
+  - docker push anuragmaher/complex-server
+  - docker push anuragmaher/complex-worker
