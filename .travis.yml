@@ -1,0 +1,23 @@
+sudo: required
+language: generic
+
+services:
+  - docker
+
+before_install:
+  - docker build -t anurag/complex-client -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true anurag/complex-client npm run test -- --coverage
+
+after_success:
+  - docker build -t anurag/complex-client ./client
+  - docker build -t anurag/complex-nginx ./nginx
+  - docker build -t anurag/complex-server ./server
+  - docker build -t anurag/complex-worker ./worker
+
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push anurag/complex-client
+  - docker push anurag/complex-nginx
+  - docker push anurag/complex-server
+  - docker push anurag/complex-worker
